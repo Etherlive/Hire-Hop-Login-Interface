@@ -1,8 +1,5 @@
 ﻿using HireHop_Login_Interface.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,17 +8,11 @@ namespace HireHop_Login_Interface.Controllers
     [Route("auth")]
     public class LoginController : Controller
     {
-        [HttpGet("trackme")]
-        public ActionResult TrackMe()
-        {
-            string identifier = Services.ConnectionManager.CreateClient();
-            Response.Cookies.Append("identity", identifier);
-            return Json(new { status = "success", messaged = "Identity now being tracked" });
-        }
+        #region Methods
 
         // POST: auth/login
         [HttpPost("login")]
-        public async Task<ActionResult> Create([FromHeader]string username, [FromHeader]string password, [FromHeader]string companyId)
+        public async Task<ActionResult> Create([FromHeader] string username, [FromHeader] string password, [FromHeader] string companyId)
         {
             if (Request.Cookies.TryGetValue("identity", out string identity) &&
                 Services.ConnectionManager.IsIdentity(identity, out TrackedIdentity identity_obj))
@@ -52,5 +43,15 @@ namespace HireHop_Login_Interface.Controllers
             }
             return Json(new { status = "error", message = "Your identity is invalid" });
         }
+
+        [HttpGet("trackme")]
+        public ActionResult TrackMe()
+        {
+            string identifier = Services.ConnectionManager.CreateClient();
+            Response.Cookies.Append("identity", identifier);
+            return Json(new { status = "success", messaged = "Identity now being tracked" });
+        }
+
+        #endregion Methods
     }
 }

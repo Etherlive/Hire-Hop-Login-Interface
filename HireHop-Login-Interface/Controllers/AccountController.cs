@@ -1,15 +1,13 @@
 ﻿using HireHop_Login_Interface.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HireHop_Login_Interface.Controllers
 {
     [Route("account")]
     public class AccountController : Controller
     {
+        #region Methods
+
         [HttpGet("me")]
         public ActionResult GetMe()
         {
@@ -20,5 +18,7 @@ namespace HireHop_Login_Interface.Controllers
             }
             return Json(new { status = "error", message = "Your identity is invalid" });
         }
+
+        #endregion Methods
     }
 }

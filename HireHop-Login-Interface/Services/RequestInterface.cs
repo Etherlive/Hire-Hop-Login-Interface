@@ -1,62 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-
+using System.Threading.Tasks;
 
 namespace HireHop_Login_Interface.Services
 {
-
-    public class ClientConnection
-    {
-        public static readonly string url = "https://myhirehop.com/";
-
-        public string __id;
-        private HttpClientHandler __httpClientHandler;
-        private HttpClient __httpClient;
-        public HttpResponseMessage __lastResponse;
-
-        private HttpClientHandler constructHttpClient()
-        {
-            HttpClientHandler http = new HttpClientHandler();
-            http.UseCookies = true;
-            return http;
-        }
-
-        public HttpClient httpClient
-        {
-            get
-            {
-                __httpClient = __httpClient == null ? new HttpClient(httpClientHandler) : __httpClient;
-                return __httpClient;
-            }
-        }
-
-        public HttpClientHandler httpClientHandler
-        {
-            get
-            {
-                __httpClientHandler = __httpClientHandler == null ? constructHttpClient() : __httpClientHandler;
-                return __httpClientHandler;
-            }
-        }
-
-        public CookieCollection cookies
-        {
-            get
-            {
-                return __httpClientHandler.CookieContainer.GetCookies(new Uri(url));
-            }
-        }
-    }
-
     public static class RequestInterface
     {
+        #region Methods
 
-        public static async Task<ClientConnection> SendRequest(ClientConnection client,string urlPath, string method = "POST", List<string> contentList = null)
+        public static async Task<ClientConnection> SendRequest(ClientConnection client, string urlPath, string method = "POST", List<string> contentList = null)
         {
             var httpClient = client.httpClient;
 
@@ -84,5 +39,62 @@ namespace HireHop_Login_Interface.Services
                 return client;
             }
         }
+
+        #endregion Methods
+    }
+
+    public class ClientConnection
+    {
+        #region Fields
+
+        public static readonly string url = "https://myhirehop.com/";
+
+        public string __id;
+        public HttpResponseMessage __lastResponse;
+        private HttpClient __httpClient;
+        private HttpClientHandler __httpClientHandler;
+
+        #endregion Fields
+
+        #region Properties
+
+        public CookieCollection cookies
+        {
+            get
+            {
+                return __httpClientHandler.CookieContainer.GetCookies(new Uri(url));
+            }
+        }
+
+        public HttpClient httpClient
+        {
+            get
+            {
+                __httpClient = __httpClient == null ? new HttpClient(httpClientHandler) : __httpClient;
+                return __httpClient;
+            }
+        }
+
+        public HttpClientHandler httpClientHandler
+        {
+            get
+            {
+                __httpClientHandler = __httpClientHandler == null ? constructHttpClient() : __httpClientHandler;
+                return __httpClientHandler;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        private HttpClientHandler constructHttpClient()
+        {
+            HttpClientHandler http = new HttpClientHandler();
+            http.UseCookies = true;
+            return http;
+        }
+
+        #endregion Methods
     }
 }

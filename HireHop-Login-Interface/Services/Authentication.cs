@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Net.Http;
 
 namespace HireHop_Login_Interface.Services
 {
     public static class Authentication
     {
+        #region Methods
+
         public static async Task<ClientConnection> Login(ClientConnection client, string username, string password, string companyId = "ELTH")
         {
             client = await RequestInterface.SendRequest(client, "login.php", contentList: new List<string>()
@@ -24,5 +23,7 @@ namespace HireHop_Login_Interface.Services
 
             return client;
         }
+
+        #endregion Methods
     }
 }
