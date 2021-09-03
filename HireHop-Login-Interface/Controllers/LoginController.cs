@@ -24,8 +24,10 @@ namespace HireHop_Login_Interface.Controllers
         public async Task<ActionResult> Create([FromHeader]string username, [FromHeader]string password, [FromHeader]string companyId)
         {
             if (Request.Cookies.TryGetValue("identity", out string identity) &&
-                Services.ConnectionManager.IsIdentity(identity, out ClientConnection client))
+                Services.ConnectionManager.IsIdentity(identity, out TrackedIdentity identity_obj))
             {
+                ClientConnection client = identity_obj.clientConnection;
+
                 if (username == null || password == null || username.Length < 1 || password.Length < 1)
                 {
                     return Json(new { status = "error", message = "Invalid Username or Password length" });
@@ -39,6 +41,8 @@ namespace HireHop_Login_Interface.Controllers
 
                 if (successful_login)
                 {
+                    identity_obj.user = new User() { username = username };
+                    //identity_obj.Update();
                     return Json(new { status = "success", message = "Logged in successfully" });
                 }
                 else

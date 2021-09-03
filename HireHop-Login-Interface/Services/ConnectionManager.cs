@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace HireHop_Login_Interface.Services
 {
+
     public static class ConnectionManager
     {
-        private static Dictionary<string, ClientConnection> tracked_connections = new Dictionary<string, ClientConnection>();
+        private static Dictionary<string, TrackedIdentity> tracked_connections = new Dictionary<string, TrackedIdentity>();
 
 
         private static Random rnd = new Random();
@@ -23,11 +24,11 @@ namespace HireHop_Login_Interface.Services
         public static string CreateClient()
         {
             string identifier = rndString();
-            tracked_connections.Add(identifier, new ClientConnection());
+            tracked_connections.Add(identifier, new TrackedIdentity(identifier));
             return identifier;
         }
 
-        public static bool IsIdentity(string identity, out ClientConnection client)
+        public static bool IsIdentity(string identity, out TrackedIdentity client)
         {
             if (tracked_connections.ContainsKey(identity))
             {
