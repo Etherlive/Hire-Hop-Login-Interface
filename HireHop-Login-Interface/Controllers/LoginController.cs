@@ -16,14 +16,15 @@ namespace HireHop_Login_Interface.Controllers
         {
             string identifier = Services.ConnectionManager.CreateClient();
             Response.Cookies.Append("identity", identifier);
-            return Json(new { identity = identifier });
+            return Json(new { status = "success", messaged = "Identity now being tracked" });
         }
 
         // POST: auth/login
         [HttpPost("login")]
-        public async Task<ActionResult> Create([FromHeader] string identity, [FromHeader]string username, [FromHeader]string password, [FromHeader]string companyId)
+        public async Task<ActionResult> Create([FromHeader]string username, [FromHeader]string password, [FromHeader]string companyId)
         {
-            if (identity!=null && Services.ConnectionManager.IsIdentity(identity, out ClientConnection client))
+            if (Request.Cookies.TryGetValue("identity", out string identity) &&
+                Services.ConnectionManager.IsIdentity(identity, out ClientConnection client))
             {
                 if (username == null || password == null || username.Length < 1 || password.Length < 1)
                 {
