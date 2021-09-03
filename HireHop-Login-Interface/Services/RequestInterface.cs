@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace HireHop_Login_Interface.Services
 {
@@ -33,7 +34,9 @@ namespace HireHop_Login_Interface.Services
                 }
                 catch (Exception e)
                 {
-                    e = e;
+                    Console.WriteLine("An Request Error Occurred: " + e.Source);
+                    string fname = $"{e.Source} {DateTime.Now.ToShortDateString()}".Replace("\\","-").Replace("/","-").Replace(".","-");
+                    File.WriteAllText($"./{fname}.log", e.ToString());
                 }
 
                 return client;
