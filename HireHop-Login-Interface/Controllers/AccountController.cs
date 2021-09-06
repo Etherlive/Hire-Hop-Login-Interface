@@ -1,5 +1,6 @@
-﻿using HireHop_Login_Interface.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Hire_Hop_Interface.Management;
+using Hire_Hop_Interface.Requests;
 
 namespace HireHop_Login_Interface.Controllers
 {
@@ -12,7 +13,7 @@ namespace HireHop_Login_Interface.Controllers
         public ActionResult GetMe()
         {
             if (Request.Cookies.TryGetValue("identity", out string identity) &&
-                  Services.ConnectionManager.IsIdentity(identity, out TrackedIdentity identity_obj))
+                  ConnectionManager.IsIdentity(identity, out TrackedIdentity identity_obj))
             {
                 return Json(new { status = "success", messaged = "Fetched your data", you = identity_obj.user });
             }
