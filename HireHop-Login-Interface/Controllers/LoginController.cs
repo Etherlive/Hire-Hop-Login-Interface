@@ -26,10 +26,10 @@ namespace HireHop_Login_Interface.Controllers
                 }
                 ClientConnection conn;
 
-                if (companyId == null) conn = await Authentication.Login(client, username, password);
-                else conn = await Authentication.Login(client, username, password, companyId);
+                bool successful_login = false;
 
-                bool successful_login = conn.cookies.Count > 0 && !conn.cookies.Any(x => x.Name == "id" && x.Value == "deleted");
+                if (companyId == null) successful_login = await Authentication.Login(client, username, password);
+                else successful_login = await Authentication.Login(client, username, password, companyId);
 
                 if (successful_login)
                 {
